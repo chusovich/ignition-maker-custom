@@ -1,5 +1,4 @@
-ARG IGNITION_VERSION=latest
-FROM inductiveautomation/ignition:${IGNITION_VERSION}
+FROM inductiveautomation/ignition:8.1.48
 
 COPY --chmod=755 docker-entrypoint-shim.sh /usr/local/bin/
 
