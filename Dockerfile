@@ -19,7 +19,7 @@ RUN rm "/usr/local/bin/ignition/user-lib/modules/BACnet Driver-module.modl" && /
     rm "/usr/local/bin/ignition/user-lib/modules/Vision-module.modl" && /
     rm "/usr/local/bin/ignition/user-lib/modules/Web Browser Module.modl" && /
     rm "/usr/local/bin/ignition/user-lib/modules/Voice Notification-module.modl" && /
-    rm -f "/usr/local/bin/ignition/user-lib/modules/IEC 61850 Driver-modl.modl" && /
+    rm -f "/usr/local/bin/ignition/user-lib/modules/IEC 61850 Driver-module.modl" && /
     rm "/usr/local/bin/ignition/user-lib/modules/DNP3-Driver-v2.modl"
 
 RUN ls -l /usr/local/bin/
