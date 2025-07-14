@@ -8,8 +8,8 @@ ENTRYPOINT ["/usr/local/bin/docker-entrypoint-shim.sh"]
 # Add third-party modules
 COPY MQTT-Distributor-signed.modl /usr/local/bin/ignition/user-lib/modules/
 COPY MQTT-Engine-signed.modl /usr/local/bin/ignition/user-lib/modules/
-RUN chown ignition:ignition MQTT-Distributor-signed.modl
-RUN chown ignition:ignition MQTT-Engine-signed.modl
+RUN chown ignition:ignition /usr/local/bin/ignition/user-lib/modules/MQTT-Distributor-signed.modl
+RUN chown ignition:ignition /usr/local/bin/ignition/user-lib/modules/MQTT-Engine-signed.modl
 
 RUN ls -l /usr/local/bin/
 RUN ls -l /usr/local/bin/ignition/user-lib/modules/
