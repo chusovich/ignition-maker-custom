@@ -1,14 +1,26 @@
 FROM inductiveautomation/ignition:8.1.48
 
-COPY --chmod=755 --chown=ignition:ignition docker-entrypoint-shim.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/docker-entrypoint-shim.sh
+#COPY --chmod=755 --chown=ignition:ignition docker-entrypoint-shim.sh /usr/local/bin/
+# RUN chmod +x /usr/local/bin/docker-entrypoint-shim.sh
 
 # Target the entrypoint shim for any custom logic prior to gateway launch
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint-shim.sh"]
+# ENTRYPOINT ["/usr/local/bin/docker-entrypoint-shim.sh"]
 
 # Add third-party modules
 COPY --chown=ignition:ignition MQTT-Distributor-signed.modl /usr/local/bin/ignition/user-lib/modules/
 COPY --chown=ignition:ignition MQTT-Engine-signed.modl /usr/local/bin/ignition/user-lib/modules/
+
+RUN -rm usr/local/bin/igintion/user-lib/modules/BACnet Driver-module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/DNP3-Driver.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/Enterprise Administration-module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/Serial Support Client-module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/SMS Notification-module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/Symbol Factory-module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/Vision-module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/Web Browser Module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/Voice Notification-module.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/IEC 61850 Driver-modl.modl
+RUN -rm usr/local/bin/igintion/user-lib/modules/DNP3-Driver-v2.modl
 
 RUN ls -l /usr/local/bin/
 RUN ls -l /usr/local/bin/ignition/user-lib/modules/
