@@ -8,5 +8,5 @@ ENTRYPOINT ["/usr/local/bin/docker-entrypoint-shim.sh"]
 # Add third-party modules
 COPY *.modl /usr/local/bin/ignition/user-lib/modules/
 
-# RUN ls -l /usr/local/bin/
-# RUN ls -l /usr/local/bin/ignition/user-lib/modules/
+RUN ls -l /usr/local/bin/
+RUN ls -l /usr/local/bin/ignition/user-lib/modules/
