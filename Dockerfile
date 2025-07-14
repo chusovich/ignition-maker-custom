@@ -1,6 +1,7 @@
 FROM inductiveautomation/ignition:8.1.48
 
 COPY --chmod=755 --chown=ignition:ignition docker-entrypoint-shim.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint-shim.sh
 
 # Target the entrypoint shim for any custom logic prior to gateway launch
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint-shim.sh"]
