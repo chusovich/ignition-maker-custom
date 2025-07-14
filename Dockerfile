@@ -1,16 +1,13 @@
 FROM inductiveautomation/ignition:8.1.48
 
-COPY --chmod=755 docker-entrypoint-shim.sh /usr/local/bin/
+COPY --chmod=755 --chown=ignition:ignition docker-entrypoint-shim.sh /usr/local/bin/
 
 # Target the entrypoint shim for any custom logic prior to gateway launch
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint-shim.sh"]
 
 # Add third-party modules
-COPY MQTT-Distributor-signed.modl /usr/local/bin/ignition/user-lib/modules/
-COPY MQTT-Engine-signed.modl /usr/local/bin/ignition/user-lib/modules/
-# RUN groupadd -r ignition && useradd -r -g ignition ignition
-RUN sudo chown ignition:ignition /usr/local/bin/ignition/user-lib/modules/MQTT-Distributor-signed.modl
-RUN sudo chown ignition:ignition /usr/local/bin/ignition/user-lib/modules/MQTT-Engine-signed.modl
+COPY --chown=ignition:ignition MQTT-Distributor-signed.modl /usr/local/bin/ignition/user-lib/modules/
+COPY --chown=ignition:ignition MQTT-Engine-signed.modl /usr/local/bin/ignition/user-lib/modules/
 
 RUN ls -l /usr/local/bin/
 RUN ls -l /usr/local/bin/ignition/user-lib/modules/
