@@ -1,4 +1,4 @@
-FROM inductiveautomation/ignition:8.1.48
+FROM inductiveautomation/ignition:8.3.1
 
 #COPY --chmod=755 --chown=ignition:ignition docker-entrypoint-shim.sh /usr/local/bin/
 # RUN chmod +x /usr/local/bin/docker-entrypoint-shim.sh
@@ -24,3 +24,4 @@ RUN rm "/usr/local/bin/ignition/user-lib/modules/BACnet Driver-module.modl" && \
 
 RUN ls -l /usr/local/bin/
 RUN ls -l /usr/local/bin/ignition/user-lib/modules/
+
