@@ -1,8 +1,13 @@
 name: Build and Push Docker Image
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+    # Optional: define inputs that can be provided when running manually
+    inputs:
+      tag:
+        description: 'tag'
+        required: true
+        default: 'beta'
 
 jobs:
   build:

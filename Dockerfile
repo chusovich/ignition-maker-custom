@@ -1,4 +1,4 @@
-FROM inductiveautomation/ignition:8.1.48
+FROM inductiveautomation/ignition:8.3.2
 
 #COPY --chmod=755 --chown=ignition:ignition docker-entrypoint-shim.sh /usr/local/bin/
 # RUN chmod +x /usr/local/bin/docker-entrypoint-shim.sh
