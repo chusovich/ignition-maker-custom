@@ -1,2 +1,96 @@
 # ignition-maker-custom
 a custom image for Ignition, setup with MQTT for Maker Edition
+
+## Example Docker Compose
+```yaml
+services:
+  gateway:
+    image: ghcr.io/chusovich/ignition-maker-custom:latest
+    container_name: ignition-gateway
+    restart: unless-stopped
+    ports:
+      - 9088:8088
+      - 1883:1883
+    user: 0:0
+    volumes:
+      - gw-data:/usr/local/bin/ignition/data
+    secrets:
+      - gateway-activation-token
+      - gateway-admin-password
+    environment:
+      IGNITION_UID: 2003
+      IGNITION_GID: 2003
+      DISABLE_QUICKSTART: true
+      ACCEPT_IGNITION_EULA: "Y"
+      IGNITION_EDITION: maker
+      IGNITION_ACTIVATION_TOKEN_FILE: /run/secrets/gateway-activation-token
+      IGNITION_LICENSE_KEY: JCL2-Y434
+      GATEWAY_ADMIN_PASSWORD_FILE: /run/secrets/gateway-admin-password
+    command:
+      -n home-automation
+    networks:
+      traefik:
+      ignition:
+    labels:
+    - "traefik.enable=true"
+    - "traefik.docker.network=traefik"
+      # HTTP
+    - "traefik.http.routers.ignition-gw.rule=Host(`gw.iot.husovich.com`)"
+    - "traefik.http.routers.ignition-gw.entrypoints=http"
+    - "traefik.http.routers.ignition-gw.service=ignition-gw"
+    - "traefik.http.routers.ignition-gw.middlewares=traefik-https-redirect"
+    - "traefik.http.routers.ignition-gw.middlewares=ignition-headers"
+      # HTTP Redirect
+    - "traefik.http.middlewares.traefik-https-redirect.redirectscheme.scheme=https"
+    - "traefik.http.middlewares.redirect-https.redirectScheme.permanent=true"
+      # HTTPS
+    - "traefik.http.routers.ignition-gw-secure.rule=Host(`gw.iot.husovich.com`)"
+    - "traefik.http.routers.ignition-gw-secure.entrypoints=https"
+    - "traefik.http.routers.ignition-gw-secure.service=ignition-gw"
+    - "traefik.http.routers.ignition-gw-secure.tls=true"
+    - "traefik.http.routers.ignition-gw-secure.tls.certresolver=myresolver"
+      # Load Balancer
+    - "traefik.http.services.ignition-gw.loadbalancer.server.port=8088"
+    - "traefik.http.services.ignition-gw.loadbalancer.passhostheader=true"
+    - "traefik.http.services.ignition-gw.loadbalancer.responseforwarding.flushinterval=1ms"
+      # Websockets
+    - "traefik.http.middlewares.ignition-headers.headers.customrequestheaders.X-Forwarded-Proto=https"
+    - "traefik.http.middlewares.ignition-headers.headers.customresponseheaders.X-Forwarded-Proto=https"
+
+  db:
+    image: mariadb:11.4
+    container_name: ignition-database
+    hostname: maria-db
+    restart: unless-stopped
+    environment:
+      MARIADB_USER: ignition
+      MARIADB_PASSWORD_FILE: /run/secrets/db-ignition-password
+      MARIADB_DATABASE: ignition
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db-root-password
+    secrets:
+      - db-root-password
+      - db-ignition-password
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      ignition:
+
+secrets:
+  db-ignition-password:
+    file: ./secrets/DB_IGNITION_PASSWORD
+  db-root-password:
+    file: ./secrets/DB_ROOT_PASSWORD
+  gateway-activation-token:
+    file: ./secrets/GATEWAY_ACTIVATION_TOKEN
+  gateway-admin-password:
+    file: ./secrets/GATEWAY_ADMIN_PASSWORD
+
+volumes:
+  gw-data:
+  db-data:
+
+networks:
+  ignition:
+  traefik:
+    external: true  
+```
